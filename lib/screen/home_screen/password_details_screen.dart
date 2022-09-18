@@ -1,10 +1,12 @@
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:encrypt_password_manager/constants/colors.dart';
 import 'package:encrypt_password_manager/constants/sized_box.dart';
 import 'package:encrypt_password_manager/constants/text_style_collections.dart';
 import 'package:encrypt_password_manager/model/password.dart';
-import 'package:encrypt_password_manager/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../other_screen/edit_password_screen.dart';
 
 class PasswordDetailsScreen extends StatelessWidget {
   static const routeName = '/password-details';
@@ -14,9 +16,27 @@ class PasswordDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final password = ModalRoute.of(context)!.settings.arguments as Password;
     return Scaffold(
-      appBar: EncryptAppBar(
-        isPasswordDetailsPage: true,
-        url: password.nameOrUrl,
+      appBar: AppBar(
+        title: Text(password.nameOrUrl),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            CarbonIcons.arrow_left,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(
+                EditPasswordScreen.routeName,
+                arguments: password,
+              );
+            },
+            icon: const Icon(CarbonIcons.edit),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Container(

@@ -1,44 +1,50 @@
 import 'package:encrypt_password_manager/model/password.dart';
+import 'package:encrypt_password_manager/provider/passwords_provider.dart';
 import 'package:encrypt_password_manager/screen/home_screen/password_details_screen.dart';
-import 'package:encrypt_password_manager/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../constants/text_style_collections.dart';
 import '../../widgets/password_tile.dart';
+import '../other_screen/add_new_password.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/home';
-  HomeScreen({Key? key}) : super(key: key);
-
-  final List<Password> passwords = [
-    Password(
-      nameOrUrl: 'www.github.com',
-      usernameOrEmail: 'satyam@gmail.com',
-      password: "123456",
-      notes:
-          'This is my github password hsjsieikjhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh.',
-    ),
-    Password(
-      nameOrUrl: 'www.facebook.com',
-      usernameOrEmail: 'satyam@gmail.com',
-      password: "123456",
-      notes: 'This is my facebook password.',
-    ),
-    Password(
-      nameOrUrl: 'www.instagram.com',
-      usernameOrEmail: 'satyamnoob',
-      password: "123456",
-    ),
-    Password(
-      nameOrUrl: 'www.twitter.com',
-      usernameOrEmail: 'satyamnoob',
-      password: "123456",
-    ),
-  ];
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final List<Password> passwords =
+        Provider.of<PasswordsProvider>(context).passwords;
     return Scaffold(
-      appBar: EncryptAppBar(isHomePage: true),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Encry',
+              style: TextStyleCollection.appbarTextStyle1,
+            ),
+            Text(
+              'pt.',
+              style: TextStyleCollection.appbarTextStyle2,
+            ),
+          ],
+        ),
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.settings_rounded),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(AddNewPasswordScreen.routeName);
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [

@@ -1,5 +1,3 @@
-import 'package:encrypt_password_manager/provider/passwords_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class Password {

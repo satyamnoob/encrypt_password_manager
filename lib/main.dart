@@ -2,6 +2,7 @@ import 'package:encrypt_password_manager/provider/collection/provider_collection
 import 'package:encrypt_password_manager/screen/home_screen/home_screen.dart';
 import 'package:encrypt_password_manager/screen/home_screen/password_details_screen.dart';
 import 'package:encrypt_password_manager/screen/other_screen/add_new_password.dart';
+import 'package:encrypt_password_manager/screen/other_screen/edit_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         title: 'Encrypt.',
         theme: ThemeData(
           brightness: Brightness.dark,
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.cyan,
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.black,
             centerTitle: true,
@@ -35,9 +36,10 @@ class MyApp extends StatelessWidget {
         initialRoute: SplashScreen.routeName,
         routes: {
           SplashScreen.routeName: (_) => const SplashScreen(),
-          HomeScreen.routeName: (_) => HomeScreen(),
+          HomeScreen.routeName: (_) => const HomeScreen(),
           PasswordDetailsScreen.routeName: (_) => const PasswordDetailsScreen(),
-          AddNewPasswordScreen.routeName: (_) => const AddNewPasswordScreen(),
+          AddNewPasswordScreen.routeName: (_) => AddNewPasswordScreen(),
+          EditPasswordScreen.routeName: (_) => EditPasswordScreen(),
         },
       ),
     );

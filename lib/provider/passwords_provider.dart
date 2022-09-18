@@ -30,7 +30,18 @@ class PasswordsProvider extends ChangeNotifier {
 
   List<Password> get passwords => _passwords;
 
-  addPassword(Password newPassword) {
+  addPassword({
+    required String nameOrUrl,
+    required String usernameOrEmail,
+    required String password,
+    String? notes,
+  }) {
+    Password newPassword = Password(
+      nameOrUrl: nameOrUrl,
+      usernameOrEmail: usernameOrEmail,
+      password: password,
+      notes: notes,
+    );
     _passwords.add(newPassword);
     notifyListeners();
   }
@@ -40,14 +51,22 @@ class PasswordsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  editPassword(String id, String nameOrUrl, String usernameOrEmail,
-      String password, String? notes) {
-    _passwords[_passwords.indexWhere((element) => element.id == id)] = Password(
-      nameOrUrl: nameOrUrl,
-      usernameOrEmail: usernameOrEmail,
-      password: password,
-      notes: notes,
-    );
+  editPassword({
+    required String id,
+    required String nameOrUrl,
+    required String usernameOrEmail,
+    required String password,
+    String? notes,
+  }) {
+    final indexOfOldPassword =
+        _passwords.indexWhere((element) => element.id == id);
+    print("$nameOrUrl\n$usernameOrEmail\n$password\n${notes ?? ''}\n");
+    _passwords[indexOfOldPassword].nameOrUrl = nameOrUrl;
+    _passwords[indexOfOldPassword].usernameOrEmail = usernameOrEmail;
+    _passwords[indexOfOldPassword].password = password;
+    _passwords[indexOfOldPassword].notes = notes;
+    print(
+        "${_passwords[indexOfOldPassword].nameOrUrl}\n${_passwords[indexOfOldPassword].usernameOrEmail}\n${_passwords[indexOfOldPassword].password}\n${_passwords[indexOfOldPassword].notes ?? ''}\n");
     notifyListeners();
   }
 }

@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ],
       ),
-      nextScreen: HomeScreen(),
+      nextScreen: const HomeScreen(),
       splashTransition: SplashTransition.scaleTransition,
       pageTransitionType: PageTransitionType.bottomToTop,
     );
