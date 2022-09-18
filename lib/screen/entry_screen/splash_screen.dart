@@ -1,5 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:encrypt_password_manager/constants/text_style_collections.dart';
+import 'package:encrypt_password_manager/provider/password_settings_provider.dart';
 import 'package:encrypt_password_manager/provider/theme_provider.dart';
 import 'package:encrypt_password_manager/screen/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,10 @@ class _SplashScreenState extends State<SplashScreen> {
       context,
       listen: false,
     ).intializeDarkMode();
+    Provider.of<PasswordSettingsProvider>(
+      context,
+      listen: false,
+    ).intializePasswordGeneratorSettings();
   }
 
   @override
