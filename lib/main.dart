@@ -1,11 +1,12 @@
 import 'package:encrypt_password_manager/provider/collection/provider_collections.dart';
 import 'package:encrypt_password_manager/screen/home_screen/home_screen.dart';
 import 'package:encrypt_password_manager/screen/home_screen/password_details_screen.dart';
-import 'package:encrypt_password_manager/screen/other_screen/add_new_password.dart';
-import 'package:encrypt_password_manager/screen/other_screen/edit_password_screen.dart';
+import 'package:encrypt_password_manager/screen/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'screen/add_edit_password_screen/add_new_password.dart';
+import 'screen/add_edit_password_screen/edit_password_screen.dart';
 import 'screen/entry_screen/splash_screen.dart';
 
 void main() {
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: ProviderCollections.providers,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Encrypt.',
         theme: ThemeData(
           brightness: Brightness.dark,
@@ -38,8 +40,9 @@ class MyApp extends StatelessWidget {
           SplashScreen.routeName: (_) => const SplashScreen(),
           HomeScreen.routeName: (_) => const HomeScreen(),
           PasswordDetailsScreen.routeName: (_) => const PasswordDetailsScreen(),
-          AddNewPasswordScreen.routeName: (_) => AddNewPasswordScreen(),
+          AddNewPasswordScreen.routeName: (_) => const AddNewPasswordScreen(),
           EditPasswordScreen.routeName: (_) => EditPasswordScreen(),
+          SettingsScreen.routeName: (_) => const SettingsScreen(),
         },
       ),
     );

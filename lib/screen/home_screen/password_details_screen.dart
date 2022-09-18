@@ -6,12 +6,17 @@ import 'package:encrypt_password_manager/model/password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../other_screen/edit_password_screen.dart';
+import '../add_edit_password_screen/edit_password_screen.dart';
 
-class PasswordDetailsScreen extends StatelessWidget {
+class PasswordDetailsScreen extends StatefulWidget {
   static const routeName = '/password-details';
   const PasswordDetailsScreen({Key? key}) : super(key: key);
 
+  @override
+  State<PasswordDetailsScreen> createState() => _PasswordDetailsScreenState();
+}
+
+class _PasswordDetailsScreenState extends State<PasswordDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final password = ModalRoute.of(context)!.settings.arguments as Password;
@@ -29,10 +34,12 @@ class PasswordDetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(
-                EditPasswordScreen.routeName,
-                arguments: password,
-              );
+              Navigator.of(context)
+                  .pushNamed(
+                    EditPasswordScreen.routeName,
+                    arguments: password,
+                  )
+                  .then((_) => setState(() {}));
             },
             icon: const Icon(CarbonIcons.edit),
           ),

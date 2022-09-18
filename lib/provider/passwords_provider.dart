@@ -60,13 +60,13 @@ class PasswordsProvider extends ChangeNotifier {
   }) {
     final indexOfOldPassword =
         _passwords.indexWhere((element) => element.id == id);
-    print("$nameOrUrl\n$usernameOrEmail\n$password\n${notes ?? ''}\n");
+    // print("$nameOrUrl\n$usernameOrEmail\n$password\n${notes ?? ''}\n");
     _passwords[indexOfOldPassword].nameOrUrl = nameOrUrl;
     _passwords[indexOfOldPassword].usernameOrEmail = usernameOrEmail;
     _passwords[indexOfOldPassword].password = password;
     _passwords[indexOfOldPassword].notes = notes;
-    print(
-        "${_passwords[indexOfOldPassword].nameOrUrl}\n${_passwords[indexOfOldPassword].usernameOrEmail}\n${_passwords[indexOfOldPassword].password}\n${_passwords[indexOfOldPassword].notes ?? ''}\n");
+    // print(
+    // "${_passwords[indexOfOldPassword].nameOrUrl}\n${_passwords[indexOfOldPassword].usernameOrEmail}\n${_passwords[indexOfOldPassword].password}\n${_passwords[indexOfOldPassword].notes ?? ''}\n");
     notifyListeners();
   }
 }

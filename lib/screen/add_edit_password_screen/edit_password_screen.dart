@@ -5,9 +5,12 @@ import 'package:provider/provider.dart';
 import '../../constants/sized_box.dart';
 import '../../constants/text_style_collections.dart';
 import '../../model/password.dart';
+import '../../provider/password_settings_provider.dart';
 import '../../provider/passwords_provider.dart';
+import '../../widgets/generate_password.dart';
 import '../../widgets/password_heading.dart';
 
+// ignore: must_be_immutable
 class EditPasswordScreen extends StatefulWidget {
   static const routeName = '/edit-password';
   bool _init = true;
@@ -39,26 +42,42 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    void _submitForm(BuildContext context) {
-      if (_formKey.currentState!.validate()) {
-        print(_notesController.text);
-        Provider.of<PasswordsProvider>(context, listen: false).editPassword(
-          id: password.id,
-          nameOrUrl: _nameUrlController.text,
-          usernameOrEmail: _usernameEmailController.text,
-          password: _passwordController.text,
-          notes: _notesController.text == '' ? null : _notesController.text,
-        );
-        Navigator.of(context).pop();
-      }
-    }
+  void dispose() {
+    super.dispose();
+    _nameUrlController.dispose();
+    _usernameEmailController.dispose();
+    _passwordController.dispose();
+    _notesController.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    _passwordController.text =
+        (Provider.of<PasswordSettingsProvider>(context).password == '')
+            ? _passwordController.text
+            : Provider.of<PasswordSettingsProvider>(context).password;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Password'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Edit ',
+              style: TextStyleCollection.appbarTextStyle1,
+            ),
+            Text(
+              'Password',
+              style: TextStyleCollection.appbarTextStyle2,
+            ),
+          ],
+        ),
         leading: IconButton(
           onPressed: () {
+            Provider.of<PasswordSettingsProvider>(
+              context,
+              listen: false,
+            ).deleteGeneratedPassword();
             Navigator.pop(context);
           },
           icon: const Icon(
@@ -97,7 +116,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
                       return null;
                     },
                     onChanged: (value) {
-                      print(_nameUrlController.text);
+                      // print(_nameUrlController.text);
                     },
                   ),
                   SizedBoxes.sizedBox20,
@@ -112,7 +131,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
                         return null;
                       },
                       onChanged: (value) {
-                        print(_usernameEmailController.text);
+                        // print(_usernameEmailController.text);
                       }),
                   SizedBoxes.sizedBox20,
                   const PasswordHeaderField(header: 'PASSWORD*'),
@@ -126,16 +145,19 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
                       return null;
                     },
                     onChanged: (value) {
-                      print(_passwordController.text);
+                      // print(_passwordController.text);
                     },
                   ),
                   SizedBoxes.sizedBox20,
+                  const GeneratePassword(),
+                  SizedBoxes.sizedBox20,
                   const PasswordHeaderField(header: 'NOTES'),
                   TextFormField(
+                    maxLines: 3,
                     controller: _notesController,
                     style: TextStyleCollection.passwordDetails,
                     onChanged: (value) {
-                      print(_notesController.text);
+                      // print(_notesController.text);
                     },
                   ),
                   SizedBoxes.sizedBox20,
@@ -146,5 +168,22 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
         ),
       ),
     );
+  }
+
+  void _submitForm(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      Provider.of<PasswordsProvider>(context, listen: false).editPassword(
+        id: password.id,
+        nameOrUrl: _nameUrlController.text,
+        usernameOrEmail: _usernameEmailController.text,
+        password: _passwordController.text,
+        notes: _notesController.text == '' ? null : _notesController.text,
+      );
+      Provider.of<PasswordSettingsProvider>(
+        context,
+        listen: false,
+      ).deleteGeneratedPassword();
+      Navigator.of(context).pop();
+    }
   }
 }

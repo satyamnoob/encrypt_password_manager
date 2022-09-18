@@ -1,27 +1,69 @@
 import 'package:carbon_icons/carbon_icons.dart';
+import 'package:encrypt_password_manager/provider/password_settings_provider.dart';
 import 'package:encrypt_password_manager/provider/passwords_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/sized_box.dart';
 import '../../constants/text_style_collections.dart';
+import '../../widgets/generate_password.dart';
 import '../../widgets/password_heading.dart';
 
-class AddNewPasswordScreen extends StatelessWidget {
+class AddNewPasswordScreen extends StatefulWidget {
   static const routeName = '/add-new-password';
-  AddNewPasswordScreen({Key? key}) : super(key: key);
-  final TextEditingController nameUrlController = TextEditingController();
-  final TextEditingController usernameEmailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController notesController = TextEditingController();
+  const AddNewPasswordScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AddNewPasswordScreen> createState() => _AddNewPasswordScreenState();
+}
+
+class _AddNewPasswordScreenState extends State<AddNewPasswordScreen> {
+  final TextEditingController _nameUrlController = TextEditingController();
+
+  final TextEditingController _usernameEmailController =
+      TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  final TextEditingController _notesController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nameUrlController.dispose();
+    _usernameEmailController.dispose();
+    _passwordController.dispose();
+    _notesController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _passwordController.text =
+        Provider.of<PasswordSettingsProvider>(context).password;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Password'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Add New ',
+              style: TextStyleCollection.appbarTextStyle1,
+            ),
+            Text(
+              'Password',
+              style: TextStyleCollection.appbarTextStyle2,
+            ),
+          ],
+        ),
         leading: IconButton(
           onPressed: () {
+            Provider.of<PasswordSettingsProvider>(
+              context,
+              listen: false,
+            ).deleteGeneratedPassword();
             Navigator.pop(context);
           },
           icon: const Icon(
@@ -51,7 +93,7 @@ class AddNewPasswordScreen extends StatelessWidget {
                 children: [
                   const PasswordHeaderField(header: 'NAME/URL*'),
                   TextFormField(
-                    controller: nameUrlController,
+                    controller: _nameUrlController,
                     style: TextStyleCollection.passwordDetails,
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -63,7 +105,7 @@ class AddNewPasswordScreen extends StatelessWidget {
                   SizedBoxes.sizedBox20,
                   const PasswordHeaderField(header: 'USERNAME/EMAIL*'),
                   TextFormField(
-                    controller: usernameEmailController,
+                    controller: _usernameEmailController,
                     style: TextStyleCollection.passwordDetails,
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -75,7 +117,7 @@ class AddNewPasswordScreen extends StatelessWidget {
                   SizedBoxes.sizedBox20,
                   const PasswordHeaderField(header: 'PASSWORD*'),
                   TextFormField(
-                    controller: passwordController,
+                    controller: _passwordController,
                     style: TextStyleCollection.passwordDetails,
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -85,9 +127,12 @@ class AddNewPasswordScreen extends StatelessWidget {
                     },
                   ),
                   SizedBoxes.sizedBox20,
+                  const GeneratePassword(),
+                  SizedBoxes.sizedBox20,
                   const PasswordHeaderField(header: 'NOTES'),
                   TextFormField(
-                    controller: notesController,
+                    maxLines: 3,
+                    controller: _notesController,
                     style: TextStyleCollection.passwordDetails,
                   ),
                   SizedBoxes.sizedBox20,
@@ -102,15 +147,19 @@ class AddNewPasswordScreen extends StatelessWidget {
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      print(notesController.text);
+      // print(_notesController.text);
       Provider.of<PasswordsProvider>(context, listen: false).addPassword(
-        nameOrUrl: nameUrlController.text.trim(),
-        password: passwordController.text.trim(),
-        usernameOrEmail: usernameEmailController.text.trim(),
-        notes: notesController.text.trim() == ''
+        nameOrUrl: _nameUrlController.text.trim(),
+        password: _passwordController.text.trim(),
+        usernameOrEmail: _usernameEmailController.text.trim(),
+        notes: _notesController.text.trim() == ''
             ? null
-            : notesController.text.trim(),
+            : _notesController.text.trim(),
       );
+      Provider.of<PasswordSettingsProvider>(
+        context,
+        listen: false,
+      ).deleteGeneratedPassword();
       Navigator.of(context).pop();
     }
   }

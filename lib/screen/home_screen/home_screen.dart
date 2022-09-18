@@ -1,12 +1,13 @@
 import 'package:encrypt_password_manager/model/password.dart';
 import 'package:encrypt_password_manager/provider/passwords_provider.dart';
 import 'package:encrypt_password_manager/screen/home_screen/password_details_screen.dart';
+import 'package:encrypt_password_manager/screen/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/text_style_collections.dart';
 import '../../widgets/password_tile.dart';
-import '../other_screen/add_new_password.dart';
+import '../add_edit_password_screen/add_new_password.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/home';
@@ -33,7 +34,9 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, SettingsScreen.routeName);
+          },
           icon: const Icon(Icons.settings_rounded),
         ),
         actions: [
