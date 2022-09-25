@@ -1,4 +1,7 @@
 class Keys {
+  //Master Password
+  static String masterPassword = 'master';
+
   //Theme Keys
   static String darkMode = 'darkMode';
 

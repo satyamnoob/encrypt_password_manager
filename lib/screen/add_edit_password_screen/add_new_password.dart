@@ -41,7 +41,9 @@ class _AddNewPasswordScreenState extends State<AddNewPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     _passwordController.text =
-        Provider.of<PasswordSettingsProvider>(context).password;
+        Provider.of<PasswordSettingsProvider>(context).password == ''
+            ? _passwordController.text
+            : Provider.of<PasswordSettingsProvider>(context).password;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -101,6 +103,9 @@ class _AddNewPasswordScreenState extends State<AddNewPasswordScreen> {
                       }
                       return null;
                     },
+                    decoration: const InputDecoration(
+                      hintText: 'www.facebook.com',
+                    ),
                   ),
                   SizedBoxes.sizedBox20,
                   const PasswordHeaderField(header: 'USERNAME/EMAIL*'),
@@ -120,10 +125,23 @@ class _AddNewPasswordScreenState extends State<AddNewPasswordScreen> {
                     controller: _passwordController,
                     style: TextStyleCollection.passwordDetails,
                     validator: (value) {
-                      if (value!.isEmpty) {
+                      if (value!.trim().isEmpty) {
                         return 'Enter PASSWORD.';
                       }
                       return null;
+                    },
+                    onChanged: (value) {
+                      if (value == '') {
+                        Provider.of<PasswordSettingsProvider>(
+                          context,
+                          listen: false,
+                        ).deleteGeneratedPassword();
+                        // print(
+                        //     'Password-----------${Provider.of<PasswordSettingsProvider>(
+                        //   context,
+                        //   listen: false,
+                        // ).password}');
+                      }
                     },
                   ),
                   SizedBoxes.sizedBox20,

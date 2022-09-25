@@ -1,6 +1,6 @@
-import 'package:carbon_icons/carbon_icons.dart';
 import 'package:encrypt_password_manager/constants/text_style_collections.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../constants/sizes.dart';
 import '../model/password.dart';
@@ -16,8 +16,8 @@ class PasswordTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(
-        CarbonIcons.logo_facebook,
+      leading: Icon(
+        password.iconData ?? FontAwesomeIcons.lock,
         size: Sizes.websiteIconSize,
       ),
       title: Text(

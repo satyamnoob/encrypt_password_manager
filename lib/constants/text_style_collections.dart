@@ -34,7 +34,7 @@ class TextStyleCollection {
   //PasswordDetails TextStyle
   static TextStyle passwordDetailsHeading = const TextStyle(
     fontSize: 18,
-    color: Colors.grey,
+    color: Colors.cyan,
   );
   static TextStyle passwordDetails = const TextStyle(
     fontSize: 16,

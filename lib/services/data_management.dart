@@ -2,11 +2,25 @@ import 'package:encrypt_password_manager/constants/keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataManagement {
+  //First Time Opening The App--------------------->
+  static setMasterPassword({String value = ''}) async {
+    final instance = await SharedPreferences.getInstance();
+    await instance.setString(Keys.masterPassword, value);
+  }
+
+  static get masterPassword async {
+    final instance = await SharedPreferences.getInstance();
+    final data = instance.getString(Keys.masterPassword);
+    if (data == null) {
+      return null;
+    }
+    return data;
+  }
+
   //DarkMode ---------------------->
   static toggleDarkMode(bool value) async {
     final instance = await SharedPreferences.getInstance();
     await instance.setBool(Keys.darkMode, value);
-    print(await isDarkMode());
   }
 
   static isDarkMode() async {

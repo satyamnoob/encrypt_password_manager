@@ -62,7 +62,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _themeSettingsRow(switchValue),
+                const Divider(),
                 _passwordSettingsRow(),
+                const Divider(),
               ],
             ),
           ),
@@ -72,133 +74,139 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   _themeSettingsRow(bool switchValue) {
-    return ExpansionTile(
-      tilePadding: EdgeInsets.zero,
-      title: const Text('Theme'),
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Dark Mode',
-              style: TextStyleCollection.passwordDetails,
-            ),
-            Switch(
-              value: switchValue,
-              onChanged: (value) async {
-                Provider.of<ThemeProvider>(
-                  context,
-                  listen: false,
-                ).toggleDarkMode(value);
-              },
-            ),
-          ],
-        ),
-      ],
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        tilePadding: EdgeInsets.zero,
+        title: const Text('Theme'),
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Dark Mode',
+                style: TextStyleCollection.passwordDetails,
+              ),
+              Switch(
+                value: switchValue,
+                onChanged: (value) async {
+                  Provider.of<ThemeProvider>(
+                    context,
+                    listen: false,
+                  ).toggleDarkMode(value);
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   _passwordSettingsRow() {
-    return ExpansionTile(
-      tilePadding: EdgeInsets.zero,
-      title: Text(
-        'Password Generator Settings',
-        style: TextStyleCollection.passwordDetails,
-      ),
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Letters',
-              style: TextStyleCollection.passwordDetails,
-            ),
-            Switch(
-              value: Provider.of<PasswordSettingsProvider>(context)
-                  .isLettersAllowed,
-              onChanged: (value) {
-                Provider.of<PasswordSettingsProvider>(
-                  context,
-                  listen: false,
-                ).setIsLettersAllowed(value);
-              },
-            ),
-          ],
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        tilePadding: EdgeInsets.zero,
+        title: Text(
+          'Password Generator Settings',
+          style: TextStyleCollection.passwordDetails,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Numbers',
-              style: TextStyleCollection.passwordDetails,
-            ),
-            Switch(
-              value: Provider.of<PasswordSettingsProvider>(context)
-                  .isNumbersAllowed,
-              onChanged: (value) {
-                Provider.of<PasswordSettingsProvider>(
-                  context,
-                  listen: false,
-                ).setIsNumbersAllowed(value);
-              },
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Special Charecters',
-              style: TextStyleCollection.passwordDetails,
-            ),
-            Switch(
-              value: Provider.of<PasswordSettingsProvider>(context)
-                  .isSpecialCharactersAllowed,
-              onChanged: (value) {
-                Provider.of<PasswordSettingsProvider>(
-                  context,
-                  listen: false,
-                ).setIsSpecialCharactersAllowed(value);
-              },
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Password Length',
-              style: TextStyleCollection.passwordDetails,
-            ),
-            DropdownButton(
-              // isExpanded: true,
-              value:
-                  Provider.of<PasswordSettingsProvider>(context).passwordLength,
-              // hint: const Text('Select Length'),
-              items: GeneratedPasswordLengthValues.lengthValues
-                  .map(
-                    (int item) => DropdownMenuItem<int>(
-                      value: item,
-                      child: SizedBox(
-                        // width: SizeConfig.safeBlockHorizontal! * 8,
-                        child: Text(
-                          item.toString(),
-                          textAlign: TextAlign.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Letters',
+                style: TextStyleCollection.passwordDetails,
+              ),
+              Switch(
+                value: Provider.of<PasswordSettingsProvider>(context)
+                    .isLettersAllowed,
+                onChanged: (value) {
+                  Provider.of<PasswordSettingsProvider>(
+                    context,
+                    listen: false,
+                  ).setIsLettersAllowed(value);
+                },
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Numbers',
+                style: TextStyleCollection.passwordDetails,
+              ),
+              Switch(
+                value: Provider.of<PasswordSettingsProvider>(context)
+                    .isNumbersAllowed,
+                onChanged: (value) {
+                  Provider.of<PasswordSettingsProvider>(
+                    context,
+                    listen: false,
+                  ).setIsNumbersAllowed(value);
+                },
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Special Charecters',
+                style: TextStyleCollection.passwordDetails,
+              ),
+              Switch(
+                value: Provider.of<PasswordSettingsProvider>(context)
+                    .isSpecialCharactersAllowed,
+                onChanged: (value) {
+                  Provider.of<PasswordSettingsProvider>(
+                    context,
+                    listen: false,
+                  ).setIsSpecialCharactersAllowed(value);
+                },
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Password Length',
+                style: TextStyleCollection.passwordDetails,
+              ),
+              DropdownButton(
+                // isExpanded: true,
+                value: Provider.of<PasswordSettingsProvider>(context)
+                    .passwordLength,
+                // hint: const Text('Select Length'),
+                items: GeneratedPasswordLengthValues.lengthValues
+                    .map(
+                      (int item) => DropdownMenuItem<int>(
+                        value: item,
+                        child: SizedBox(
+                          // width: SizeConfig.safeBlockHorizontal! * 8,
+                          child: Text(
+                            item.toString(),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (int? value) {
-                Provider.of<PasswordSettingsProvider>(
-                  context,
-                  listen: false,
-                ).setPasswordLength(value!);
-              },
-            ),
-          ],
-        ),
-      ],
+                    )
+                    .toList(),
+                onChanged: (int? value) {
+                  Provider.of<PasswordSettingsProvider>(
+                    context,
+                    listen: false,
+                  ).setPasswordLength(value!);
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

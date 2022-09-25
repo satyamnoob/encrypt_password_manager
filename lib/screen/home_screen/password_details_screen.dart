@@ -58,7 +58,7 @@ class _PasswordDetailsScreenState extends State<PasswordDetailsScreen> {
               children: [
                 ..._passwordField(
                     context, 'NAME/URL', password.nameOrUrl, false),
-                SizedBoxes.sizedBox10,
+                SizedBoxes.sizedBox20,
                 ..._passwordField(
                     context, 'USERNAME/EMAIL', password.usernameOrEmail, true),
                 SizedBoxes.sizedBox10,
@@ -84,11 +84,13 @@ class _PasswordDetailsScreenState extends State<PasswordDetailsScreen> {
         fieldName,
         style: TextStyleCollection.passwordDetailsHeading,
       ),
-      if (!isEmailOrPassword)
+      if (!isEmailOrPassword) ...[
+        SizedBoxes.sizedBox10,
         Text(
           fieldValue,
           style: TextStyleCollection.passwordDetails,
         ),
+      ],
       if (isEmailOrPassword)
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

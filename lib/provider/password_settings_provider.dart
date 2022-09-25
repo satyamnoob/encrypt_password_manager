@@ -45,7 +45,7 @@ class PasswordSettingsProvider extends ChangeNotifier {
   setPasswordLength(int length) async {
     _lengthOfPassword = length;
     await DataManagement.setPasswordLength(length);
-    print(await DataManagement.passwordLength);
+    // print(await DataManagement.passwordLength);
     notifyListeners();
   }
 
