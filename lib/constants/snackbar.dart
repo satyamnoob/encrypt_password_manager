@@ -1,3 +1,4 @@
+import 'package:encrypt_password_manager/constants/text_style_collections.dart';
 import 'package:flutter/material.dart';
 
 class Snackbar {
@@ -5,8 +6,11 @@ class Snackbar {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.red,
-        content: Text(content),
-        duration: const Duration(milliseconds: 700),
+        content: Text(
+          content,
+          style: TextStyleCollection.errorSnackbar,
+        ),
+        duration: const Duration(milliseconds: 2000),
       ),
     );
   }

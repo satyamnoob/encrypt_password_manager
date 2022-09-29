@@ -44,4 +44,9 @@ class TextStyleCollection {
   static TextStyle elevatedButton = const TextStyle(
     color: Colors.black,
   );
+
+  //Error Snackbar Text Style
+  static TextStyle errorSnackbar = const TextStyle(
+    color: Colors.white,
+  );
 }

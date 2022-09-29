@@ -16,7 +16,6 @@ import 'screen/entry_screen/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   final themeLightStr =
       await rootBundle.loadString('assets/themes/appainter_themeLight.json');
   final themeLightJson = jsonDecode(themeLightStr);
@@ -58,11 +57,14 @@ class MyApp extends StatelessWidget {
                   scaffoldBackgroundColor: Colors.black,
                 )
               : themeLight.copyWith(
-                  appBarTheme: const AppBarTheme(centerTitle: true),
+                  appBarTheme: const AppBarTheme(
+                    centerTitle: true,
+                    // elevation: 0.0,
+                  ),
                 ),
           initialRoute: SplashScreen.routeName,
           routes: {
-            SplashScreen.routeName: (_) => const SplashScreen(),
+            SplashScreen.routeName: (_) => SplashScreen(),
             HomeScreen.routeName: (_) => const HomeScreen(),
             PasswordDetailsScreen.routeName: (_) =>
                 const PasswordDetailsScreen(),

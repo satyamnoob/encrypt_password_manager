@@ -1,22 +1,30 @@
-import 'package:flutter/foundation.dart';
-
-import '../services/data_management.dart';
+import 'package:encrypt_password_manager/services/secure_management.dart';
+import 'package:flutter/material.dart';
 
 class MasterPasswordProvider extends ChangeNotifier {
   String? _masterPassword;
+  bool _isMasterPasswordSet = false;
 
-  setMasterPassword(String value) async {
-    await DataManagement.setMasterPassword(
-      value: value.trim(),
+  setMasterPassword(BuildContext context, String value) async {
+    await SecureManagement.setMasterPassword(
+      context,
+      value.trim(),
     );
-    _masterPassword = await DataManagement.masterPassword;
+    _masterPassword = await SecureManagement.masterPassword;
+    if (_masterPassword != null) {
+      _isMasterPasswordSet = true;
+    }
     notifyListeners();
   }
 
-  initializeFirstTimeOpeningApp() async {
-    _masterPassword = await DataManagement.masterPassword;
+  Future<bool> initializeMasterPassword() async {
+    _masterPassword = await SecureManagement.masterPassword;
+    print("Master Password = $_masterPassword");
     notifyListeners();
+    return _masterPassword == null ? false : true;
   }
 
   String? get masterpassword => _masterPassword;
+
+  bool get isMasterPasswordSet => _isMasterPasswordSet;
 }

@@ -1,4 +1,5 @@
 import 'package:encrypt_password_manager/constants/snackbar.dart';
+import 'package:encrypt_password_manager/provider/crypt_provider.dart';
 import 'package:encrypt_password_manager/provider/master_password_provider.dart';
 import 'package:encrypt_password_manager/screen/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,19 @@ class IntroductoryScreen extends StatefulWidget {
 class _IntroductoryScreenState extends State<IntroductoryScreen> {
   final TextEditingController _masterPasswordController =
       TextEditingController();
+
+  // void _initializeCryptSettings() async {
+  //   await Provider.of<CryptProvider>(
+  //     context,
+  //     listen: false,
+  //   ).generateCryptSettings();
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    // _initializeCryptSettings();
+  }
 
   int _validate = 9;
 
@@ -106,6 +120,16 @@ class _IntroductoryScreenState extends State<IntroductoryScreen> {
         showSkipButton: true,
         skip: const Text('Skip'),
         done: const Text("Set", style: TextStyle(fontWeight: FontWeight.w600)),
+        // onChange: (_) {
+        //   print(Provider.of<CryptProvider>(
+        //     context,
+        //     listen: false,
+        //   ).salt);
+        //   print(Provider.of<CryptProvider>(
+        //     context,
+        //     listen: false,
+        //   ).rounds.toString());
+        // },
         onDone: () async {
           // When done button is press
           if (_masterPasswordController.text.trim().length < 8) {
@@ -114,11 +138,13 @@ class _IntroductoryScreenState extends State<IntroductoryScreen> {
               'Cannot proceed before setting master password',
             );
           } else {
-            Provider.of<MasterPasswordProvider>(
+            await Provider.of<MasterPasswordProvider>(
               context,
               listen: false,
-            ).setMasterPassword(_masterPasswordController.text);
-            Navigator.pushNamed(context, HomeScreen.routeName);
+            ).setMasterPassword(context, _masterPasswordController.text);
+            if (mounted) {
+              Navigator.pushNamed(context, HomeScreen.routeName);
+            }
           }
         },
       ),

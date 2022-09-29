@@ -1,7 +1,7 @@
 import 'dart:math';
 
 String generateStrongPassword({
-  bool letter = true,
+  bool isLetter = true,
   bool isNumber = true,
   bool isSpecial = true,
   required int lengthOfPassword,
@@ -13,12 +13,22 @@ String generateStrongPassword({
   const special = '@#%^*>\$@?/[]=+';
 
   String chars = "";
-  if (letter) chars += '$letterLowerCase$letterUpperCase';
+  if (isLetter) chars += '$letterLowerCase$letterUpperCase';
   if (isNumber) chars += number;
   if (isSpecial) chars += special;
-
-  return List.generate(length, (index) {
+  final generatedString = List.generate(length, (index) {
     final indexRandom = Random.secure().nextInt(chars.length);
     return chars[indexRandom];
   }).join('');
+
+  return generatedString;
+}
+
+int generateRandomRoundsForCrypt() {
+  final random = Random.secure();
+  int min = 10000;
+  int max = 100000;
+  final rounds = min + random.nextInt(max - min);
+  // print("Rounds ------------------>$rounds");
+  return rounds;
 }

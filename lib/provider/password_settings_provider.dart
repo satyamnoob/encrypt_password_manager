@@ -1,4 +1,4 @@
-import 'package:encrypt_password_manager/constants/generate_strong_password.dart';
+import 'package:encrypt_password_manager/constants/generate_functions.dart';
 import 'package:flutter/foundation.dart';
 
 import '../services/data_management.dart';
@@ -9,18 +9,27 @@ class PasswordSettingsProvider extends ChangeNotifier {
   bool _isLetter = true;
   bool _isNumber = true;
   bool _isSpecial = true;
+  bool _allSettingsDisabled = false;
+
+  _checkAllSettingsDisabled() {
+    return !_isLetter && !_isNumber && !_isSpecial;
+  }
 
   intializePasswordGeneratorSettings() async {
     _lengthOfPassword = await DataManagement.passwordLength;
     _isLetter = await DataManagement.isLettersAllowed;
     _isNumber = await DataManagement.isNumbersAllowed;
     _isSpecial = await DataManagement.isSpecialCharactersAllowed;
+    _allSettingsDisabled = _checkAllSettingsDisabled();
+    print(
+        "Length = $_lengthOfPassword\nIs Letter = $_isLetter\nIs Number = $_isNumber\nIs Special = $_isSpecial");
     notifyListeners();
   }
 
   setIsLettersAllowed(bool value) async {
     _isLetter = value;
     await DataManagement.setIsLettersAllowed(value);
+    _allSettingsDisabled = _checkAllSettingsDisabled();
     notifyListeners();
   }
 
@@ -29,6 +38,7 @@ class PasswordSettingsProvider extends ChangeNotifier {
   setIsNumbersAllowed(bool value) async {
     _isNumber = value;
     await DataManagement.setIsNumbersAllowed(value);
+    _allSettingsDisabled = _checkAllSettingsDisabled();
     notifyListeners();
   }
 
@@ -37,6 +47,7 @@ class PasswordSettingsProvider extends ChangeNotifier {
   setIsSpecialCharactersAllowed(bool value) async {
     _isSpecial = value;
     await DataManagement.setIsSpecialCharactersAllowed(value);
+    _allSettingsDisabled = _checkAllSettingsDisabled();
     notifyListeners();
   }
 
@@ -52,10 +63,13 @@ class PasswordSettingsProvider extends ChangeNotifier {
   int get passwordLength => _lengthOfPassword;
 
   generatePassword() {
+    if (_checkAllSettingsDisabled()) {
+      return;
+    }
     _password = generateStrongPassword(
       lengthOfPassword: _lengthOfPassword,
       isNumber: _isNumber,
-      letter: _isLetter,
+      isLetter: _isLetter,
       isSpecial: _isSpecial,
     );
     notifyListeners();
@@ -67,4 +81,6 @@ class PasswordSettingsProvider extends ChangeNotifier {
   }
 
   String get password => _password;
+
+  bool get allSettingsDisabled => _allSettingsDisabled;
 }

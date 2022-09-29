@@ -1,4 +1,5 @@
 import 'package:encrypt_password_manager/model/password.dart';
+import 'package:encrypt_password_manager/provider/crypt_provider.dart';
 import 'package:encrypt_password_manager/provider/master_password_provider.dart';
 import 'package:encrypt_password_manager/provider/passwords_provider.dart';
 import 'package:encrypt_password_manager/screen/home_screen/password_details_screen.dart';
@@ -21,19 +22,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // TextEditingController? _masterPasswordController;
-  // initAsync() async {
-  //   _showWelcomeDialog();
-  // }
-
-  // _showWelcomeDialog() async {
-  //   WidgetsBinding.instance.addPostFrameCallback(
-  //     (_) async {
-  //       await _welcomeDialog(); //
-  //     },
-  //   );
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -43,9 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     super.dispose();
-    // if (_masterPasswordController != null) {
-    //   _masterPasswordController!.dispose();
-    // }
   }
 
   @override
@@ -53,7 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final List<Password> passwords =
         Provider.of<PasswordsProvider>(context).passwords;
     print(
-        "Masterpassword -------------->${Provider.of<MasterPasswordProvider>(context).masterpassword}");
+        "Master Password Hash ------------->${Provider.of<MasterPasswordProvider>(context).masterpassword}");
+    print(
+        "Salt and rounds --------------------->${Provider.of<CryptProvider>(context).salt} ${Provider.of<CryptProvider>(context).rounds}");
     return Scaffold(
       appBar: AppBar(
         title: Row(

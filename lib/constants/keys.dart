@@ -1,6 +1,10 @@
 class Keys {
+  static String firstTime = 'firstTime';
+
   //Master Password
   static String masterPassword = 'master';
+  static String salt = 'salt';
+  static String rounds = 'rounds';
 
   //Theme Keys
   static String darkMode = 'darkMode';

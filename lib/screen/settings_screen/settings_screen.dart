@@ -1,5 +1,6 @@
 import 'package:carbon_icons/carbon_icons.dart';
 import 'package:encrypt_password_manager/constants/generated_password_settings.dart';
+import 'package:encrypt_password_manager/constants/types.dart';
 import 'package:encrypt_password_manager/provider/password_settings_provider.dart';
 import 'package:encrypt_password_manager/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants/size_config.dart';
 import '../../constants/text_style_collections.dart';
+import '../../widgets/password_settings_switch.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const routeName = '/settings-screen';
@@ -25,7 +27,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    bool switchValue = Provider.of<ThemeProvider>(context).isDarkMode;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -61,7 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _themeSettingsRow(switchValue),
+                _themeSettingsRow(),
                 const Divider(),
                 _passwordSettingsRow(),
                 const Divider(),
@@ -73,7 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  _themeSettingsRow(bool switchValue) {
+  _themeSettingsRow() {
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
@@ -88,7 +89,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 style: TextStyleCollection.passwordDetails,
               ),
               Switch(
-                value: switchValue,
+                value: Provider.of<ThemeProvider>(context).isDarkMode,
                 onChanged: (value) async {
                   Provider.of<ThemeProvider>(
                     context,
@@ -113,62 +114,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           style: TextStyleCollection.passwordDetails,
         ),
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Letters',
-                style: TextStyleCollection.passwordDetails,
-              ),
-              Switch(
-                value: Provider.of<PasswordSettingsProvider>(context)
-                    .isLettersAllowed,
-                onChanged: (value) {
-                  Provider.of<PasswordSettingsProvider>(
-                    context,
-                    listen: false,
-                  ).setIsLettersAllowed(value);
-                },
-              ),
-            ],
+          const PasswordSettingsSwitch(
+            switchType: PasswordSettingsSwitchType.letter,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Numbers',
-                style: TextStyleCollection.passwordDetails,
-              ),
-              Switch(
-                value: Provider.of<PasswordSettingsProvider>(context)
-                    .isNumbersAllowed,
-                onChanged: (value) {
-                  Provider.of<PasswordSettingsProvider>(
-                    context,
-                    listen: false,
-                  ).setIsNumbersAllowed(value);
-                },
-              ),
-            ],
+          const PasswordSettingsSwitch(
+            switchType: PasswordSettingsSwitchType.number,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Special Charecters',
-                style: TextStyleCollection.passwordDetails,
-              ),
-              Switch(
-                value: Provider.of<PasswordSettingsProvider>(context)
-                    .isSpecialCharactersAllowed,
-                onChanged: (value) {
-                  Provider.of<PasswordSettingsProvider>(
-                    context,
-                    listen: false,
-                  ).setIsSpecialCharactersAllowed(value);
-                },
-              ),
-            ],
+          const PasswordSettingsSwitch(
+            switchType: PasswordSettingsSwitchType.specialCharacter,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
