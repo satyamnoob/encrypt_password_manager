@@ -6,6 +6,9 @@ class Password {
   String nameOrUrl;
   String usernameOrEmail;
   String password;
+  int index;
+  // int rounds;
+  // String salt;
   String? notes;
   IconData? iconData;
 
@@ -13,6 +16,9 @@ class Password {
     required this.nameOrUrl,
     required this.usernameOrEmail,
     required this.password,
+    required this.index,
+    // required this.rounds,
+    // required this.salt,
     this.notes,
     this.iconData,
   });

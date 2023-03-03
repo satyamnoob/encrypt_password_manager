@@ -6,7 +6,7 @@ import 'package:encrypt_password_manager/provider/password_settings_provider.dar
 import 'package:encrypt_password_manager/provider/theme_provider.dart';
 import 'package:encrypt_password_manager/screen/entry_screen/introductory_screen.dart';
 import 'package:encrypt_password_manager/screen/home_screen/home_screen.dart';
-import 'package:encrypt_password_manager/services/secure_management.dart';
+// import 'package:encrypt_password_manager/services/secure_management.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -35,15 +35,16 @@ class _SplashScreenState extends State<SplashScreen> {
     ).intializePasswordGeneratorSettings();
   }
 
-  Future<void> _initializeMaterPassword() async {
+  Future<bool> _initializeMaterPassword() async {
     _isMasterPasswordSet = await Provider.of<MasterPasswordProvider>(
       context,
       listen: false,
     ).initializeMasterPassword();
+    return _isMasterPasswordSet;
   }
 
-  _initializeCrypt() {
-    if (!_isMasterPasswordSet) {
+  _initializeCrypt({bool firstTime = true}) {
+    if (firstTime) {
       Provider.of<CryptProvider>(
         context,
         listen: false,
@@ -59,9 +60,10 @@ class _SplashScreenState extends State<SplashScreen> {
   _setUpApp() async {
     _initializeIsDarkMode();
     _initializePasswordGeneratorSettings();
-    _initializeMaterPassword().then((_) {
-      _initializeCrypt();
-    });
+    // _initializeMaterPassword().then((_) {
+    //   print(_isMasterPasswordSet);
+    //   _initializeCrypt();
+    // });
   }
 
   @override
@@ -77,27 +79,41 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSplashScreen(
-      backgroundColor: Colors.black,
-      duration: 5000,
-      splash: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Encry',
-            style: TextStyleCollection.headingTextStyle1,
-          ),
-          Text(
-            'pt.',
-            style: TextStyleCollection.headingTextStyle2,
-          ),
-        ],
-      ),
-      nextScreen: _isMasterPasswordSet
-          ? const HomeScreen()
-          : const IntroductoryScreen(),
-      splashTransition: SplashTransition.scaleTransition,
-      pageTransitionType: PageTransitionType.rightToLeft,
+    return FutureBuilder(
+      future: _initializeMaterPassword(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data == true) {
+            _initializeCrypt(firstTime: false);
+          } else {
+            _initializeCrypt();
+          }
+          return AnimatedSplashScreen(
+            backgroundColor: Colors.black,
+            duration: 5000,
+            splash: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Encry',
+                  style: TextStyleCollection.headingTextStyle1,
+                ),
+                Text(
+                  'pt.',
+                  style: TextStyleCollection.headingTextStyle2,
+                ),
+              ],
+            ),
+            nextScreen: snapshot.hasData && snapshot.data == true
+                ? const HomeScreen()
+                : const IntroductoryScreen(),
+            splashTransition: SplashTransition.scaleTransition,
+            pageTransitionType: PageTransitionType.rightToLeft,
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }

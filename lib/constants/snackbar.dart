@@ -15,6 +15,17 @@ class Snackbar {
     );
   }
 
+  static confirmationSnackbar(BuildContext context, String content) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          content,
+        ),
+        duration: const Duration(milliseconds: 2000),
+      ),
+    );
+  }
+
   static removeCurrentSnackbar(BuildContext context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }

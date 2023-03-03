@@ -35,12 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Password> passwords =
+    final Map<String, Password> passwords =
         Provider.of<PasswordsProvider>(context).passwords;
     print(
         "Master Password Hash ------------->${Provider.of<MasterPasswordProvider>(context).masterpassword}");
     print(
         "Salt and rounds --------------------->${Provider.of<CryptProvider>(context).salt} ${Provider.of<CryptProvider>(context).rounds}");
+    var passwordKeys = passwords.keys.toList();
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, SettingsScreen.routeName);
+            Navigator.of(context).pushNamed(SettingsScreen.routeName);
           },
           icon: const Icon(Icons.settings_rounded),
         ),
@@ -73,151 +74,32 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: passwords.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        PasswordDetailsScreen.routeName,
-                        arguments: passwords[index],
-                      );
-                    },
-                    child: PasswordTile(password: passwords[index]),
-                  );
-                },
+        child: passwords.isEmpty
+            ? const Center(
+                child: Text('No passwords added.'),
+              )
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: passwords.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                              PasswordDetailsScreen.routeName,
+                              arguments: passwords[passwordKeys[index]]!,
+                            );
+                          },
+                          child: PasswordTile(
+                              password: passwords[passwordKeys[index]]!),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
-
-  // _welcomeDialog() {
-  //   AlertDialog alert = AlertDialog(
-  //     title: Row(
-  //       children: [
-  //         Text(
-  //           "Welcome To Encry",
-  //           style: TextStyleCollection.appbarTextStyle1,
-  //         ),
-  //         Text(
-  //           "pt.",
-  //           style: TextStyleCollection.appbarTextStyle2,
-  //         ),
-  //       ],
-  //     ),
-  //     content: const Text(
-  //         "Encrypt. is a open source password manager built using Crypt.sha256 which is a one-way hash function developed by the NSA."),
-  //     actions: [
-  //       ElevatedButton(
-  //         child: const Text("Next"),
-  //         onPressed: () async {
-  //           await _masterPasswordDialog();
-  //           // ignore: use_build_context_synchronously
-  //           Navigator.pop(context);
-  //         },
-  //       ),
-  //     ],
-  //   );
-  //   return showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) => alert,
-  //   );
-  // }
-
-  // _masterPasswordDialog() {
-  //   AlertDialog alert = AlertDialog(
-  //     title: Row(
-  //       children: [
-  //         Text(
-  //           "Welcome To Encry",
-  //           style: TextStyleCollection.appbarTextStyle1,
-  //         ),
-  //         Text(
-  //           "pt.",
-  //           style: TextStyleCollection.appbarTextStyle2,
-  //         ),
-  //       ],
-  //     ),
-  //     content: const Text(
-  //         "To use Encrypt. you need to set up a master password. We will hash and safely secure all your passwords using this master password. Beware! If you forget this master password, all your saved passwords will be gone."),
-  //     actions: [
-  //       ElevatedButton(
-  //         child: const Text("Next"),
-  //         onPressed: () async {
-  //           await _setMasterPasswordDialog();
-  //           // ignore: use_build_context_synchronously
-  //           Navigator.of(context).pop();
-  //         },
-  //       ),
-  //     ],
-  //   );
-  //   return showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) => alert,
-  //   );
-  // }
-
-  // _setMasterPasswordDialog() {
-  //   _masterPasswordController = TextEditingController();
-  //   bool _validate = false;
-  //   AlertDialog alert = AlertDialog(
-  //     title: Row(
-  //       children: [
-  //         Text(
-  //           "Welcome To Encry",
-  //           style: TextStyleCollection.appbarTextStyle1,
-  //         ),
-  //         Text(
-  //           "pt.",
-  //           style: TextStyleCollection.appbarTextStyle2,
-  //         ),
-  //       ],
-  //     ),
-  //     content: Column(
-  //       mainAxisSize: MainAxisSize.min,
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         const Text(
-  //           "Setup master password.",
-  //         ),
-  //         TextField(
-  //           decoration: InputDecoration(
-  //             labelText: 'atleat 8 characters long',
-  //             errorText: _validate ? 'Value Can\'t Be Empty' : null,
-  //           ),
-  //           style: TextStyleCollection.passwordDetails,
-  //           controller: _masterPasswordController,
-  //         ),
-  //       ],
-  //     ),
-  //     actions: [
-  //       ElevatedButton(
-  //         child: const Text("Next"),
-  //         onPressed: () async {
-  //           setState(
-  //             () {
-  //               _masterPasswordController!.text.isEmpty
-  //                   ? _validate = true
-  //                   : _validate = false;
-  //             },
-  //           );
-  //           // await _setMasterPasswordDialog();
-  //           // ignore: use_build_context_synchronously
-  //           // Navigator.of(context).pop();
-  //         },
-  //       ),
-  //     ],
-  //   );
-  //   return showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) => alert,
-  //   );
-  // }
 }

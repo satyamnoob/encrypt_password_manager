@@ -3,3 +3,8 @@ enum PasswordSettingsSwitchType {
   number,
   specialCharacter,
 }
+
+enum PasswordFieldType {
+  others,
+  password,
+}

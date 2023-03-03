@@ -10,7 +10,7 @@ class ThemeProvider extends ChangeNotifier {
   toggleDarkMode(bool value) async {
     await DataManagement.toggleDarkMode(value);
     _isDark = !_isDark;
-    print("IS DARK ------>" + _isDark.toString());
+    print("IS DARK ------>$_isDark");
     notifyListeners();
   }
 

@@ -1,14 +1,14 @@
 import 'package:carbon_icons/carbon_icons.dart';
-import 'package:encrypt_password_manager/constants/generated_password_settings.dart';
-import 'package:encrypt_password_manager/constants/types.dart';
-import 'package:encrypt_password_manager/provider/password_settings_provider.dart';
+// import 'package:encrypt_password_manager/constants/generated_password_settings.dart';
+// import 'package:encrypt_password_manager/constants/types.dart';
+// import 'package:encrypt_password_manager/provider/password_settings_provider.dart';
 import 'package:encrypt_password_manager/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/size_config.dart';
 import '../../constants/text_style_collections.dart';
-import '../../widgets/password_settings_switch.dart';
+// import '../../widgets/password_settings_switch.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const routeName = '/settings-screen';
@@ -64,8 +64,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 _themeSettingsRow(),
                 const Divider(),
-                _passwordSettingsRow(),
-                const Divider(),
+                // _passwordSettingsRow(),
+                // const Divider(),
               ],
             ),
           ),
@@ -104,62 +104,62 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  _passwordSettingsRow() {
-    return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-      child: ExpansionTile(
-        tilePadding: EdgeInsets.zero,
-        title: Text(
-          'Password Generator Settings',
-          style: TextStyleCollection.passwordDetails,
-        ),
-        children: [
-          const PasswordSettingsSwitch(
-            switchType: PasswordSettingsSwitchType.letter,
-          ),
-          const PasswordSettingsSwitch(
-            switchType: PasswordSettingsSwitchType.number,
-          ),
-          const PasswordSettingsSwitch(
-            switchType: PasswordSettingsSwitchType.specialCharacter,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Password Length',
-                style: TextStyleCollection.passwordDetails,
-              ),
-              DropdownButton(
-                // isExpanded: true,
-                value: Provider.of<PasswordSettingsProvider>(context)
-                    .passwordLength,
-                // hint: const Text('Select Length'),
-                items: GeneratedPasswordLengthValues.lengthValues
-                    .map(
-                      (int item) => DropdownMenuItem<int>(
-                        value: item,
-                        child: SizedBox(
-                          // width: SizeConfig.safeBlockHorizontal! * 8,
-                          child: Text(
-                            item.toString(),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (int? value) {
-                  Provider.of<PasswordSettingsProvider>(
-                    context,
-                    listen: false,
-                  ).setPasswordLength(value!);
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  // _passwordSettingsRow() {
+  //   return Theme(
+  //     data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+  //     child: ExpansionTile(
+  //       tilePadding: EdgeInsets.zero,
+  //       title: Text(
+  //         'Password Generator Settings',
+  //         style: TextStyleCollection.passwordDetails,
+  //       ),
+  //       children: [
+  //         const PasswordSettingsSwitch(
+  //           switchType: PasswordSettingsSwitchType.letter,
+  //         ),
+  //         const PasswordSettingsSwitch(
+  //           switchType: PasswordSettingsSwitchType.number,
+  //         ),
+  //         const PasswordSettingsSwitch(
+  //           switchType: PasswordSettingsSwitchType.specialCharacter,
+  //         ),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(
+  //               'Password Length',
+  //               style: TextStyleCollection.passwordDetails,
+  //             ),
+  //             DropdownButton(
+  //               // isExpanded: true,
+  //               value: Provider.of<PasswordSettingsProvider>(context)
+  //                   .passwordLength,
+  //               // hint: const Text('Select Length'),
+  //               items: GeneratedPasswordLengthValues.lengthValues
+  //                   .map(
+  //                     (int item) => DropdownMenuItem<int>(
+  //                       value: item,
+  //                       child: SizedBox(
+  //                         // width: SizeConfig.safeBlockHorizontal! * 8,
+  //                         child: Text(
+  //                           item.toString(),
+  //                           textAlign: TextAlign.center,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   )
+  //                   .toList(),
+  //               onChanged: (int? value) {
+  //                 Provider.of<PasswordSettingsProvider>(
+  //                   context,
+  //                   listen: false,
+  //                 ).setPasswordLength(value!);
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

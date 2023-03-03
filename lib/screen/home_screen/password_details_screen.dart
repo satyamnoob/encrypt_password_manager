@@ -1,30 +1,66 @@
 import 'package:carbon_icons/carbon_icons.dart';
-import 'package:encrypt_password_manager/constants/colors.dart';
-import 'package:encrypt_password_manager/constants/sized_box.dart';
-import 'package:encrypt_password_manager/constants/text_style_collections.dart';
+import 'package:encrypt_password_manager/constants/common_alert_dialogs.dart';
+import 'package:encrypt_password_manager/constants/types.dart';
 import 'package:encrypt_password_manager/model/password.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
+import '../../widgets/password_field.dart';
 import '../add_edit_password_screen/edit_password_screen.dart';
 
+// ignore: must_be_immutable
 class PasswordDetailsScreen extends StatefulWidget {
   static const routeName = '/password-details';
-  const PasswordDetailsScreen({Key? key}) : super(key: key);
+  bool init = false;
+  PasswordDetailsScreen({Key? key}) : super(key: key);
 
   @override
   State<PasswordDetailsScreen> createState() => _PasswordDetailsScreenState();
 }
 
 class _PasswordDetailsScreenState extends State<PasswordDetailsScreen> {
+  late final TextEditingController _masterPasswordController;
+  String _decryptedPassword = "";
+  @override
+  void initState() {
+    super.initState();
+    _masterPasswordController = TextEditingController();
+    Future.delayed(
+      Duration.zero,
+      () {
+        setState(() {
+          password = ModalRoute.of(context)!.settings.arguments as Password;
+        });
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) async {
+            await CommonAlertDialogs.decryptPasswordDialog(
+              context: context,
+              id: password.id,
+              masterPasswordController: _masterPasswordController,
+            ).then(
+              (value) => setState(() {
+                print("Password --------------------------> $value");
+                _decryptedPassword = value;
+              }),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  late final Password password;
+
   @override
   Widget build(BuildContext context) {
-    final password = ModalRoute.of(context)!.settings.arguments as Password;
+    final Password _password =
+        ModalRoute.of(context)!.settings.arguments as Password;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(password.nameOrUrl),
+        title: Text(_password.nameOrUrl),
         leading: IconButton(
           onPressed: () {
+            _password.password = _password.password;
             Navigator.pop(context);
           },
           icon: const Icon(
@@ -37,7 +73,7 @@ class _PasswordDetailsScreenState extends State<PasswordDetailsScreen> {
               Navigator.of(context)
                   .pushNamed(
                     EditPasswordScreen.routeName,
-                    arguments: password,
+                    arguments: _password,
                   )
                   .then((_) => setState(() {}));
             },
@@ -56,70 +92,28 @@ class _PasswordDetailsScreenState extends State<PasswordDetailsScreen> {
               // mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ..._passwordField(
-                    context, 'NAME/URL', password.nameOrUrl, false),
-                SizedBoxes.sizedBox20,
-                ..._passwordField(
-                    context, 'USERNAME/EMAIL', password.usernameOrEmail, true),
-                SizedBoxes.sizedBox10,
-                ..._passwordField(context, 'PASSWORD', password.password, true),
-                SizedBoxes.sizedBox10,
-                ..._passwordField(context, 'NOTES',
-                    password.notes ?? 'No Notes Added', false),
-                SizedBoxes.sizedBox10,
+                PasswordField(
+                  heading: 'NAME/URL',
+                  value: _password.nameOrUrl,
+                ),
+                PasswordField(
+                  heading: 'USERNAME/EMAIL',
+                  value: _password.usernameOrEmail,
+                ),
+                PasswordField(
+                  heading: 'PASSWORD',
+                  value: _decryptedPassword,
+                  type: PasswordFieldType.password,
+                ),
+                PasswordField(
+                  heading: 'NOTES',
+                  value: _password.notes ?? 'No Notes Added',
+                ),
               ],
             ),
           ),
         ),
       ),
     );
-  }
-
-  _passwordField(BuildContext context, String fieldName, String fieldValue,
-      bool isEmailOrPassword) {
-    SnackBar snackBar =
-        SnackBar(content: Text('$fieldName copied to clipboard'));
-    return [
-      Text(
-        fieldName,
-        style: TextStyleCollection.passwordDetailsHeading,
-      ),
-      if (!isEmailOrPassword) ...[
-        SizedBoxes.sizedBox10,
-        Text(
-          fieldValue,
-          style: TextStyleCollection.passwordDetails,
-        ),
-      ],
-      if (isEmailOrPassword)
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              fieldValue,
-              style: TextStyleCollection.passwordDetails,
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(AppColors.buttonColor),
-              ),
-              onPressed: () {
-                Clipboard.setData(ClipboardData(text: fieldValue)).then(
-                  (value) {
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  },
-                );
-              },
-              child: FittedBox(
-                child: Text(
-                  'Copy',
-                  style: TextStyleCollection.elevatedButton,
-                ),
-              ),
-            ),
-          ],
-        ),
-    ];
   }
 }

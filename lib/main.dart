@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:encrypt_password_manager/constants/colors.dart';
 import 'package:encrypt_password_manager/provider/collection/provider_collections.dart';
 import 'package:encrypt_password_manager/provider/theme_provider.dart';
 import 'package:encrypt_password_manager/screen/home_screen/home_screen.dart';
@@ -52,9 +53,9 @@ class MyApp extends StatelessWidget {
               ? themeDark.copyWith(
                   appBarTheme: const AppBarTheme(
                     centerTitle: true,
-                    backgroundColor: Colors.black,
+                    backgroundColor: AppColors.pureBlackColor,
                   ),
-                  scaffoldBackgroundColor: Colors.black,
+                  scaffoldBackgroundColor: AppColors.pureBlackColor,
                 )
               : themeLight.copyWith(
                   appBarTheme: const AppBarTheme(
@@ -64,10 +65,9 @@ class MyApp extends StatelessWidget {
                 ),
           initialRoute: SplashScreen.routeName,
           routes: {
-            SplashScreen.routeName: (_) => SplashScreen(),
+            SplashScreen.routeName: (_) => const SplashScreen(),
             HomeScreen.routeName: (_) => const HomeScreen(),
-            PasswordDetailsScreen.routeName: (_) =>
-                const PasswordDetailsScreen(),
+            PasswordDetailsScreen.routeName: (_) => PasswordDetailsScreen(),
             AddNewPasswordScreen.routeName: (_) => const AddNewPasswordScreen(),
             EditPasswordScreen.routeName: (_) => EditPasswordScreen(),
             SettingsScreen.routeName: (_) => const SettingsScreen(),

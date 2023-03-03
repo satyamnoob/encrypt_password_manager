@@ -1,5 +1,5 @@
 import 'package:encrypt_password_manager/constants/snackbar.dart';
-import 'package:encrypt_password_manager/provider/crypt_provider.dart';
+// import 'package:encrypt_password_manager/provider/crypt_provider.dart';
 import 'package:encrypt_password_manager/provider/master_password_provider.dart';
 import 'package:encrypt_password_manager/screen/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -57,8 +57,7 @@ class _IntroductoryScreenState extends State<IntroductoryScreen> {
           ],
         ),
         title: 'Password Manager',
-        body:
-            "Welcome to Encrypt. An opensource password manager made to protect your passwords using Hashing.",
+        body: "Welcome to Encrypt.",
       ),
       PageViewModel(
         image: Row(
@@ -81,7 +80,7 @@ class _IntroductoryScreenState extends State<IntroductoryScreen> {
         ),
         title: 'Password Manager',
         body:
-            "Welcome to Encrypt. An opensource password manager made to protect your passwords using Hashing.",
+            "Encrypt is an opensource password manager made to protect your passwords using Hashing.",
       ),
       PageViewModel(
         image: Row(

@@ -1,4 +1,5 @@
 import 'package:carbon_icons/carbon_icons.dart';
+import 'package:encrypt_password_manager/provider/master_password_provider.dart';
 import 'package:encrypt_password_manager/provider/password_settings_provider.dart';
 import 'package:encrypt_password_manager/provider/passwords_provider.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,8 @@ class _AddNewPasswordScreenState extends State<AddNewPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String masterPassword =
+        Provider.of<MasterPasswordProvider>(context).masterpassword!;
     _passwordController.text =
         Provider.of<PasswordSettingsProvider>(context).password == ''
             ? _passwordController.text
@@ -75,7 +78,10 @@ class _AddNewPasswordScreenState extends State<AddNewPasswordScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              _submitForm(context);
+              _submitForm(
+                masterPassword,
+                context: context,
+              );
             },
             icon: const Icon(CarbonIcons.save),
           ),
@@ -163,10 +169,12 @@ class _AddNewPasswordScreenState extends State<AddNewPasswordScreen> {
     );
   }
 
-  void _submitForm(BuildContext context) {
+  void _submitForm(String masterpassword, {required BuildContext context}) {
     if (_formKey.currentState!.validate()) {
       // print(_notesController.text);
+      print(masterpassword.substring(44));
       Provider.of<PasswordsProvider>(context, listen: false).addPassword(
+        context: context,
         nameOrUrl: _nameUrlController.text.trim(),
         password: _passwordController.text.trim(),
         usernameOrEmail: _usernameEmailController.text.trim(),

@@ -1,3 +1,4 @@
+import 'package:encrypt_password_manager/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class TextStyleCollection {
@@ -6,7 +7,7 @@ class TextStyleCollection {
   static const headingFontFamily = 'Oswald';
   static TextStyle headingTextStyle1 = const TextStyle(
     fontSize: headngFontSize,
-    color: Colors.white,
+    color: AppColors.pureWhiteColor,
     // fontFamily: headingFontFamily,
   );
   static TextStyle headingTextStyle2 = const TextStyle(
@@ -42,11 +43,16 @@ class TextStyleCollection {
 
   //Elevated Button
   static TextStyle elevatedButton = const TextStyle(
-    color: Colors.black,
+    color: Colors.white,
   );
 
   //Error Snackbar Text Style
   static TextStyle errorSnackbar = const TextStyle(
-    color: Colors.white,
+    color: AppColors.pureWhiteColor,
+  );
+
+  //Alert Dialog Text Style
+  static TextStyle deleteDialogButtonTextStyle = const TextStyle(
+    color: AppColors.errorColor,
   );
 }

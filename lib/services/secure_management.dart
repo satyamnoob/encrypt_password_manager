@@ -1,3 +1,4 @@
+import 'package:encrypt/encrypt.dart';
 import 'package:encrypt_password_manager/constants/crypt_hashing_function.dart';
 import 'package:encrypt_password_manager/constants/keys.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,10 @@ class SecureManagement {
     const storage = FlutterSecureStorage();
     await storage.write(
       key: Keys.masterPassword,
-      value: generatePasswordHash(context, value),
+      value: generateMasterPasswordHash(
+        context: context,
+        value: value,
+      ),
       aOptions: _secureOption(),
     );
   }
@@ -33,6 +37,19 @@ class SecureManagement {
     }
     return data;
   }
+
+  //Store encrypted passwords
+  static saveEncryptedPassword({
+    required String key,
+    required Encrypted password,
+  }) async {
+    const storage = FlutterSecureStorage();
+    await storage.write(
+      key: key,
+      value: password.base64,
+      aOptions: _secureOption(),
+    );
+  }
 }
 
 class CryptSecure {
@@ -47,7 +64,7 @@ class CryptSecure {
   static setRandomSalt(String salt) async {
     const storage = FlutterSecureStorage();
     await storage.write(
-      key: Keys.salt,
+      key: Keys.saltMasterPassword,
       value: salt,
       aOptions: _secureOption(),
     );
@@ -57,7 +74,7 @@ class CryptSecure {
   static get salt async {
     const storage = FlutterSecureStorage();
     final data = await storage.read(
-      key: Keys.salt,
+      key: Keys.saltMasterPassword,
       aOptions: _secureOption(),
     );
     return data;
@@ -67,7 +84,7 @@ class CryptSecure {
   static setRounds(int rounds) async {
     const storage = FlutterSecureStorage();
     await storage.write(
-      key: Keys.rounds,
+      key: Keys.roundsMasterPassword,
       value: rounds.toString(),
       aOptions: _secureOption(),
     );
@@ -77,7 +94,7 @@ class CryptSecure {
   static get rounds async {
     const storage = FlutterSecureStorage();
     final data = await storage.read(
-      key: Keys.rounds,
+      key: Keys.roundsMasterPassword,
       aOptions: _secureOption(),
     );
     if (data == null) {
